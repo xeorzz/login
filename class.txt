@@ -1,0 +1,101 @@
+index.php
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Homepage</title>
+</head>
+<body>
+<h1>Welcome to the Registration Form!</h1>
+<p>Please enter your name:</p>
+<form action="email.php" method="post">
+<label for="fname">First Name:</label>
+<input type="text" id="fname" name="fname">
+<input type="submit" value="Submit">
+</form>
+</body>
+</html>
+
+
+email.php
+
+<?php
+session_start();
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (empty($_POST["fname"])) {
+header("Location: index.php");
+exit;
+}
+$_SESSION["name"] = $_POST["fname"];
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Email Page</title>
+</head>
+<body>
+<h1>Welcome <?php echo htmlspecialchars($_SESSION["name"]); ?>!</h1>
+<form action="phone.php" method="post">
+<label for="email">Email Address:</label>
+<input type="text" id="email" name="email">
+<input type="submit" value="Submit">
+</form>
+</body>
+</html>
+
+
+phone.php
+
+<?php
+session_start();
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (empty($_POST["email"]) || !strpos($_POST["email"], '@')) {
+header("Location: email.php");
+exit;
+}
+$_SESSION["email"] = $_POST["email"];
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Phone Page</title>
+</head>
+<body>
+<form action="summary.php" method="post">
+<label for="phone">Phone Number:</label>
+<input type="text" id="phone" name="phone">
+<input type="submit" value="Submit">
+</form>
+</body>
+</html>
+
+
+summary.php
+
+<?php
+session_start();
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+$_SESSION["phone"] = $_POST["phone"];
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Summary Page</title>
+</head>
+<body>
+<h1>Summary</h1>
+<p>Name: <?php echo htmlspecialchars($_SESSION["name"]); ?></p>
+<p>Email: <?php echo htmlspecialchars($_SESSION["email"]); ?></p>
+<p>Phone: <?php echo htmlspecialchars($_SESSION["phone"]); ?></p>
+</body>
+</html>
